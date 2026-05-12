@@ -1,0 +1,329 @@
+/* ============================================================
+   Starbucks Design System — Colors & Type
+   Single source of truth for all visual tokens.
+   ============================================================ */
+
+/* Anchor 1rem = 10px so spec values like "1.6rem = 16px" hold true */
+:root { font-size: 62.5%; }
+
+/* Webfonts (Google Fonts substitutes — see README CAVEATS) */
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Kalam:wght@300;400;700&display=swap");
+
+:root {
+  /* ===== COLOR — Brand ink (espresso, derived from warm-neutral palette) ===== */
+  --espresso-deep:    #3d2e26; /* h1, brand signal (formerly Sbux Green) */
+  --espresso:         #2a1f1a; /* Filled CTA, Frap fill, dark feature bands */
+  --espresso-soft:    #5a4438; /* Mid decorative accent */
+  --tint-soft:        #f5ebe0; /* Form valid tint, light utility (Linen) */
+
+  /* Legacy aliases — old --green-* names kept so components don't break */
+  --sbux-green:       var(--espresso-deep);
+  --green-accent:     var(--espresso);
+  --house-green:      var(--espresso);
+  --green-uplift:     var(--almond-silk);
+  --green-light:      var(--tint-soft);
+  --green-consent:    var(--espresso);
+
+  /* ===== COLOR — Gold (Rewards only) ===== */
+  --gold:             #cba258;
+  --gold-light:       #dfc49d;
+  --gold-lightest:    #faf6ee;
+
+  /* ===== COLOR — Main palette (warm-neutral system) ===== */
+  --parchment:        #edede9; /* PRIMARY page canvas */
+  --dust-grey:        #d6ccc2; /* Mid neutral, hairlines, quiet borders */
+  --linen:            #f5ebe0; /* Lighter warm surface, soft band */
+  --powder-petal:     #e3d5ca; /* Warm accent neutral, card wash */
+  --almond-silk:      #d5bdaf; /* Deepest warm neutral, ceramic mood */
+
+  /* ===== COLOR — Surfaces ===== */
+  --white:            #ffffff;
+  --neutral-cool:     #f9f9f9; /* dropdown bg, quiet utility */
+  --neutral-warm:     var(--parchment);   /* PRIMARY page canvas */
+  --ceramic:          var(--linen);        /* Zone separator, ceramic wash */
+  --black:            #000000;
+
+  /* ===== COLOR — Text ===== */
+  --text-black:       rgba(0, 0, 0, 0.87);  /* primary on light */
+  --text-black-soft:  rgba(0, 0, 0, 0.58);  /* secondary on light */
+  --text-white:       rgba(255, 255, 255, 1);
+  --text-white-soft:  rgba(255, 255, 255, 0.70);
+  --rewards-green:    #33433d; /* dustier reading color, Rewards page */
+
+  /* ===== COLOR — Semantic ===== */
+  --red:              #c82014;
+  --yellow:           #fbbc05;
+  --tint-valid:       hsl(160 32% 87% / 33%);
+  --tint-invalid:     hsl(4 82% 43% / 5%);
+
+  /* ===== COLOR — Borders ===== */
+  --input-border:     #d6dbde;
+  --hairline:         #e7e7e7;
+
+  /* ===== ALPHA LADDERS ===== */
+  --alpha-black-06:   rgba(0,0,0,.06);
+  --alpha-black-10:   rgba(0,0,0,.10);
+  --alpha-black-20:   rgba(0,0,0,.20);
+  --alpha-black-30:   rgba(0,0,0,.30);
+  --alpha-black-40:   rgba(0,0,0,.40);
+  --alpha-black-50:   rgba(0,0,0,.50);
+  --alpha-black-60:   rgba(0,0,0,.60);
+  --alpha-black-70:   rgba(0,0,0,.70);
+  --alpha-black-80:   rgba(0,0,0,.80);
+  --alpha-black-90:   rgba(0,0,0,.90);
+  --alpha-white-10:   rgba(255,255,255,.10);
+  --alpha-white-20:   rgba(255,255,255,.20);
+  --alpha-white-30:   rgba(255,255,255,.30);
+  --alpha-white-40:   rgba(255,255,255,.40);
+  --alpha-white-50:   rgba(255,255,255,.50);
+  --alpha-white-60:   rgba(255,255,255,.60);
+  --alpha-white-70:   rgba(255,255,255,.70);
+  --alpha-white-80:   rgba(255,255,255,.80);
+  --alpha-white-90:   rgba(255,255,255,.90);
+
+  /* ===== TYPE — Families =====
+     SoDoSans is proprietary; Manrope substitutes with closest match.
+     Lander Tall is custom; Lora substitutes for Rewards serif. */
+  --font-sans:        "Manrope", "SoDoSans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-serif:       "Lora", "Lander Tall", "Iowan Old Style", Georgia, serif;
+  --font-script:      "Kalam", "Comic Sans MS", cursive;
+
+  /* ===== TYPE — Sizes (rem, anchored 1rem = 10px) ===== */
+  --text-1:  1.3rem;   /* micro caption */
+  --text-2:  1.4rem;   /* small / button label */
+  --text-3:  1.6rem;   /* body — universal */
+  --text-4:  1.9rem;   /* body large */
+  --text-5:  2.4rem;   /* h1, h2 */
+  --text-6:  2.8rem;   /* hero large */
+  --text-7:  3.2rem;
+  --text-8:  3.6rem;   /* jumbo */
+  --text-9:  4.5rem;
+  --text-10: 5.0rem;   /* display */
+
+  /* ===== TYPE — Weight ===== */
+  --weight-regular:   400;
+  --weight-medium:    500;
+  --weight-semibold:  600;
+  --weight-bold:      700;
+
+  /* ===== TYPE — Line height ===== */
+  --lh-compact: 1.2;   /* display, buttons */
+  --lh-normal:  1.5;   /* body */
+
+  /* ===== TYPE — Letter spacing ===== */
+  --tracking-normal:  -0.01em;  /* default — tight, characteristic */
+  --tracking-tight:   -0.16px;  /* heading legacy unit */
+  --tracking-loose:   0.1em;
+  --tracking-looser:  0.15em;
+
+  /* ===== SPACING (rem) ===== */
+  --space-1: 0.4rem;   /* 4px */
+  --space-2: 0.8rem;   /* 8px */
+  --space-3: 1.6rem;   /* 16px — UNIVERSAL RHYTHM CONSTANT */
+  --space-4: 2.4rem;   /* 24px */
+  --space-5: 3.2rem;   /* 32px */
+  --space-6: 4.0rem;   /* 40px */
+  --space-7: 4.8rem;   /* 48px */
+  --space-8: 5.6rem;   /* 56px — Frap height */
+  --space-9: 6.4rem;   /* 64px */
+
+  --outer-gutter:        var(--space-3);   /* mobile */
+  --outer-gutter-md:     var(--space-4);   /* tablet */
+  --outer-gutter-lg:     var(--space-6);   /* desktop */
+
+  /* ===== CONTAINER WIDTHS ===== */
+  --col-sm:  343px;
+  --col-md:  500px;
+  --col-lg:  720px;
+  --col-xl:  1440px;
+
+  /* ===== RADII ===== */
+  --radius-card:   12px;
+  --radius-pill:   50px;
+  --radius-input:  4px;
+  --radius-circle: 50%;
+
+  /* ===== SHADOWS — whisper-soft, layered ===== */
+  --shadow-card:
+    0 0 .5px rgba(0,0,0,.14),
+    0 1px 1px  rgba(0,0,0,.24);
+
+  --shadow-nav:
+    0 1px 3px rgba(0,0,0,.10),
+    0 2px 2px rgba(0,0,0,.06),
+    0 0 2px   rgba(0,0,0,.07);
+
+  --shadow-frap:
+    0 0 6px    rgba(0,0,0,.24),
+    0 8px 12px rgba(0,0,0,.14);
+
+  --shadow-frap-active:
+    0 0 6px    rgba(0,0,0,.24),
+    0 8px 12px rgba(0,0,0,0);
+
+  --shadow-gift:
+    0 1px 2px rgba(0,0,0,.10),
+    0 2px 6px rgba(0,0,0,.08);
+
+  /* ===== MOTION ===== */
+  --duration-default: 0.4s;
+  --duration-button:  0.2s;
+  --duration-expander: 300ms;
+  --duration-image:   0.3s;
+  --ease-out:         cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ease-spring:      cubic-bezier(0.32, 2.32, 0.61, 0.27);
+  --button-active-scale: 0.95;
+
+  /* ===== LAYOUT ===== */
+  --nav-height-xs: 64px;
+  --nav-height-sm: 72px;
+  --nav-height-md: 83px;
+  --nav-height-lg: 99px;
+
+  --frap-size:        5.6rem;
+  --frap-size-mini:   4.0rem;
+  --frap-touch-offset: -0.8rem;
+
+  --header-crate:    40vw;
+  --content-crate:   60vw;
+}
+
+/* ============================================================
+   Semantic / element styles
+   ============================================================ */
+
+html, body {
+  margin: 0;
+  background: var(--neutral-warm);
+  color: var(--text-black);
+  font-family: var(--font-sans);
+  font-size: var(--text-3);
+  line-height: var(--lh-normal);
+  letter-spacing: var(--tracking-normal);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1, .h1 {
+  font-family: var(--font-sans);
+  font-size: var(--text-5);
+  font-weight: var(--weight-semibold);
+  line-height: 36px;
+  letter-spacing: var(--tracking-tight);
+  color: var(--sbux-green);
+  margin: 0;
+}
+
+h2, .h2 {
+  font-family: var(--font-sans);
+  font-size: var(--text-5);
+  font-weight: var(--weight-regular);
+  line-height: 36px;
+  letter-spacing: var(--tracking-tight);
+  color: var(--text-black);
+  margin: 0;
+}
+
+h3, .h3 {
+  font-size: var(--text-4);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-tight);
+  line-height: var(--lh-normal);
+  color: var(--text-black);
+  margin: 0;
+}
+
+.display {
+  font-size: var(--text-10);
+  font-weight: var(--weight-semibold);
+  line-height: var(--lh-compact);
+  letter-spacing: var(--tracking-tight);
+}
+
+.jumbo {
+  font-size: var(--text-8);
+  font-weight: var(--weight-semibold);
+  line-height: var(--lh-compact);
+  letter-spacing: var(--tracking-tight);
+}
+
+.hero-lg {
+  font-size: var(--text-6);
+  font-weight: var(--weight-semibold);
+  line-height: var(--lh-compact);
+  letter-spacing: var(--tracking-tight);
+}
+
+p, .body {
+  font-size: var(--text-3);
+  font-weight: var(--weight-regular);
+  line-height: var(--lh-normal);
+  letter-spacing: var(--tracking-normal);
+  color: var(--text-black);
+  margin: 0;
+}
+
+.body-lg {
+  font-size: 19px;
+  line-height: 33.25px;
+  letter-spacing: var(--tracking-tight);
+}
+
+.small {
+  font-size: var(--text-2);
+  line-height: var(--lh-normal);
+}
+
+.micro {
+  font-size: var(--text-1);
+  line-height: var(--lh-normal);
+}
+
+.serif-display {
+  font-family: var(--font-serif);
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0;
+}
+
+.script {
+  font-family: var(--font-script);
+  font-weight: var(--weight-regular);
+}
+
+/* Buttons — universal pill */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: var(--font-sans);
+  font-size: var(--text-3);
+  font-weight: var(--weight-semibold);
+  line-height: var(--lh-compact);
+  letter-spacing: var(--tracking-normal);
+  border-radius: var(--radius-pill);
+  padding: 7px 16px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-black);
+  cursor: pointer;
+  transition: all var(--duration-button) ease;
+  user-select: none;
+}
+.btn:active { transform: scale(var(--button-active-scale)); }
+
+.btn--primary  { background: var(--green-accent); color: var(--white); border-color: var(--green-accent); }
+.btn--primary:hover  { background: #006240; border-color: #006240; }
+.btn--outline  { color: var(--green-accent); border-color: var(--green-accent); }
+.btn--outline:hover { background: rgba(0,117,74,.06); }
+.btn--black    { background: var(--black); color: var(--white); border-color: var(--black); font-size: var(--text-2); }
+.btn--dark-out { color: var(--text-black); border-color: var(--text-black); font-size: var(--text-2); }
+.btn--inverted { background: var(--white); color: var(--green-accent); border-color: var(--white); }
+.btn--out-dark { color: var(--white); border-color: var(--white); }
+
+/* Card */
+.card {
+  background: var(--white);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+}
