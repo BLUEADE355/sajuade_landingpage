@@ -76,21 +76,17 @@ window.Hero = function Hero() {
     <section id="top" style={{
       position: 'relative', overflow: 'hidden',
       background: 'var(--ink)', color: '#fff',
-      padding: mobile ? '0 24px 80px' : '120px 80px 140px',
-      marginTop: -64, paddingTop: mobile ? 100 + 64 : 120 + 64,
+      padding: mobile ? '0 24px 56px' : '60px 80px 80px',
+      marginTop: -64, paddingTop: mobile ? 24 + 64 : 32 + 64,
     }}>
-      {!mobile && (
-        <div className="hanja-mark" style={{
-          position: 'absolute', left: 80, bottom: 40,
-          display: 'flex', flexDirection: 'column', gap: 4,
-          fontSize: 14, color: 'rgba(213,189,175,0.35)', letterSpacing: '0.4em',
-          writingMode: 'vertical-rl',
-        }}>
-          <span>四 柱 命 理</span>
-        </div>
-      )}
-
       <div style={{position:'relative', maxWidth:1100, margin:'0 auto', textAlign:'center'}}>
+        <div className="hanja-mark" style={{
+          fontSize: 13, letterSpacing: '0.5em',
+          color: 'rgba(213,189,175,0.45)',
+          marginBottom: 16,
+        }}>
+          四 柱 命 理
+        </div>
         <span className="kicker kicker--white" style={{color:'var(--gold-soft)'}}>
           A Korean Saju Reading · 사주
         </span>
@@ -98,17 +94,26 @@ window.Hero = function Hero() {
           Read your<br/>
           <span style={{fontStyle:'italic', color:'var(--gold-soft)'}}>destiny.</span>
         </h1>
-        <p className="lead" style={{maxWidth:620, margin:'0 auto 12px', fontSize: mobile ? 17 : 21}}>
-          A traditional Asian Saju reading — personalized to your life,
-          your questions, and who you love.
+        <p style={{
+          maxWidth:560, margin:'0 auto 8px',
+          fontSize: mobile ? 17 : 20,
+          lineHeight: 1.65, letterSpacing: '-0.01em',
+          color: 'rgba(255,255,255,0.92)',
+        }}>
+          A traditional Asian fortune telling —<br/>
+          <span style={{
+            borderBottom: '1px solid rgba(223,196,157,0.5)',
+            paddingBottom: 1,
+            color: 'var(--gold-soft)',
+          }}>personalized</span> to your life.
         </p>
-        <p className="lead" style={{maxWidth:620, margin:'0 auto 40px', fontSize:15, color:'rgba(255,255,255,0.55)'}}>
+        <p style={{maxWidth:620, margin:'0 auto 36px', fontSize:15, color:'rgba(255,255,255,0.45)', letterSpacing:'-0.005em'}}>
           Trusted by 200+ readers worldwide.
         </p>
         <a href="#pricing" className="btn-pill btn-pill--inverted btn-pill--lg" style={{marginBottom:20}}>
           Get My Reading <Arrow size={18}/>
         </a>
-        <div style={{fontSize:13, color:'rgba(255,255,255,0.55)', letterSpacing:'-0.005em'}}>
+        <div style={{fontSize:13, color:'rgba(255,255,255,0.45)', letterSpacing:'-0.005em'}}>
           One-time payment · No subscription · PDF delivered within 48 hours
         </div>
       </div>
@@ -137,7 +142,7 @@ window.Problem = function Problem() {
             </div>
             <div style={{fontSize:11, fontWeight:600, letterSpacing:'0.16em', textTransform:'uppercase', color:'var(--gold)'}}>Relationships</div>
             <p style={{fontFamily:'var(--font-serif)', fontSize:19, lineHeight:1.45, color:'var(--ink)', fontStyle:'italic', margin:0}}>
-              "Is this person worth staying for?"
+              '"What kind of person is my destiny?"'
             </p>
           </div>
 
@@ -153,11 +158,11 @@ window.Problem = function Problem() {
 
           <div style={{background:'#fff', borderRadius:14, padding:'32px 28px', border:'1px solid var(--hairline-warm)', display:'flex', flexDirection:'column', gap:16}}>
             <div style={{width:36, height:36, borderRadius:'50%', background:'var(--gold-tint)', display:'flex', alignItems:'center', justifyContent:'center'}}>
-              <i className="ti ti-refresh" style={{fontSize:17, color:'var(--gold)'}}></i>
+              <i className="ti ti-coin" style={{fontSize:17, color:'var(--gold)'}}></i>
             </div>
-            <div style={{fontSize:11, fontWeight:600, letterSpacing:'0.16em', textTransform:'uppercase', color:'var(--gold)'}}>Patterns</div>
+            <div style={{fontSize:11, fontWeight:600, letterSpacing:'0.16em', textTransform:'uppercase', color:'var(--gold)'}}>Wealth</div>
             <p style={{fontFamily:'var(--font-serif)', fontSize:19, lineHeight:1.45, color:'var(--ink)', fontStyle:'italic', margin:0}}>
-              "Why do I keep ending up in the same situations?"
+              "How much money can I make and when?"
             </p>
           </div>
         </div>
