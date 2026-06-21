@@ -3,13 +3,51 @@
 // ============= REPORT PREVIEW =============
 window.ReportPreview = function ReportPreview() {
   const mobile = useMobile();
-  const sections = [
-    { label: 'Your Core Identity', pageNum: '03', kind: 'identity' },
-    { label: 'Career & Money', pageNum: '06', kind: 'career' },
-    { label: 'Relationships', pageNum: '09', kind: 'relationships' },
-    { label: 'This Year’s Forecast', pageNum: '12', kind: 'year' },
-    { label: 'Your Decade Ahead', pageNum: '14', kind: 'decade' },
+  const railRef = React.useRef(null);
+  const [active, setActive] = useState(0);
+  const pages = [
+    { kind: 'pillars', header: 'Birth Chart', eyebrow: '01 · Natal Chart', title: 'The Four Pillars', foot: 'The Four Pillars', page: '04 / 48' },
+    { kind: 'balance', header: 'Elements & Ten Gods', eyebrow: '01 · Natal Chart', title: 'Element & Ten Gods Balance', foot: 'Element & Ten Gods Balance', page: '05 / 48' },
+    { kind: 'wealth', header: 'Step 4', eyebrow: 'Step 4', title: 'Wealth Fortune Analysis', foot: 'Best Periods for Wealth', page: '10 / 48' },
+    { kind: 'career', header: 'Step 5', eyebrow: 'Step 5', title: 'Career Fortune Analysis', foot: 'Career Fortune Flow', page: '19 / 48' },
+    { kind: 'love', header: 'Step 6', eyebrow: 'Step 6', title: 'Love Fortune Analysis', foot: 'Love Fortune Flow Analysis', page: '26 / 48' },
+    { kind: 'luck', header: 'Grand Luck', eyebrow: 'Timeline', title: 'Grand Luck Cycles', foot: 'Grand Luck Cycles', page: '34 / 48' },
+    { kind: 'annual', header: 'Annual Luck', eyebrow: 'Year-by-Year Flow', title: 'Annual Fortune Highlights', foot: 'Annual Fortune Highlights', page: '43 / 48' },
   ];
+
+  useEffect(() => {
+    const rail = railRef.current;
+    if (!rail) return;
+    const updateActive = () => {
+      const cards = Array.from(rail.querySelectorAll('.report-preview-card'));
+      const railLeft = rail.getBoundingClientRect().left;
+      let nextIndex = 0;
+      let nextDistance = Infinity;
+      cards.forEach((card, index) => {
+        const distance = Math.abs(card.getBoundingClientRect().left - railLeft);
+        if (distance < nextDistance) {
+          nextDistance = distance;
+          nextIndex = index;
+        }
+      });
+      setActive(nextIndex);
+    };
+    updateActive();
+    rail.addEventListener('scroll', updateActive, { passive: true });
+    window.addEventListener('resize', updateActive);
+    return () => {
+      rail.removeEventListener('scroll', updateActive);
+      window.removeEventListener('resize', updateActive);
+    };
+  }, []);
+
+  const scrollToPage = (index) => {
+    const rail = railRef.current;
+    if (!rail) return;
+    const cards = rail.querySelectorAll('.report-preview-card');
+    const target = cards[Math.max(0, Math.min(pages.length - 1, index))];
+    if (target) target.scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
+  };
 
   return (
     <section className="section section--cream" style={{paddingLeft: 0, paddingRight: 0}}>
@@ -23,8 +61,25 @@ window.ReportPreview = function ReportPreview() {
         </p>
       </div>
 
-      <div className="pdf-rail">
-        {sections.map((s, i) => <PdfPage key={i} section={s} index={i} />)}
+      <div className="report-preview-shell">
+        {!mobile && (
+          <button className="report-preview-nav report-preview-nav--prev" type="button" aria-label="Previous preview" onClick={() => scrollToPage(active - 1)}>
+            ‹
+          </button>
+        )}
+        <div className="report-preview-rail" ref={railRef}>
+          {pages.map((page) => <ReportPreviewCard key={page.page} page={page} />)}
+        </div>
+        {!mobile && (
+          <button className="report-preview-nav report-preview-nav--next" type="button" aria-label="Next preview" onClick={() => scrollToPage(active + 1)}>
+            ›
+          </button>
+        )}
+        <div className="report-preview-dots" aria-hidden="true">
+          {pages.map((page, index) => (
+            <button key={page.page} type="button" className={`report-preview-dot ${active === index ? 'active' : ''}`} onClick={() => scrollToPage(index)} />
+          ))}
+        </div>
       </div>
 
       <div className="section-inner" style={{padding: mobile ? '40px 24px 0' : '40px 80px 0'}}>
@@ -54,149 +109,206 @@ window.ReportPreview = function ReportPreview() {
   );
 };
 
-function PdfPage({ section, index }) {
-  const renderBody = () => {
-    if (section.kind === 'identity') {
-      return (
-        <>
-          <FakeLine w="92%"/><FakeLine w="86%"/><FakeLine w="78%"/>
-          <div style={pdfBlock}>
-            <div style={pdfBlockH}>Day Master · 日主</div>
-            <div style={{fontFamily: 'var(--font-serif)', fontSize: 16, color: 'var(--ink)'}}>Yang Wood · 甲木</div>
-            <FakeLine w="80%" small/><FakeLine w="65%" small/>
-          </div>
-          <FakeLine w="88%"/><FakeLine w="72%"/>
-        </>
-      );
-    }
-    if (section.kind === 'career') {
-      return (
-        <>
-          <FakeLine w="90%"/><FakeLine w="76%"/>
-          <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginTop: 4}}>
-            <PdfTag label="Lean in" tone="ok"/>
-            <PdfTag label="Avoid" tone="warn"/>
-          </div>
-          <FakeLine w="84%"/><FakeLine w="68%"/><FakeLine w="79%"/>
-          <div style={pdfBlock}>
-            <div style={pdfBlockH}>Wealth pillar timing</div>
-            <div style={{display:'flex', gap: 6, marginTop: 8}}>
-              {['25','28','31','34','37'].map(y => (
-                <div key={y} style={{
-                  flex:1, padding:'8px 4px', borderRadius:4,
-                  background: y === '31' ? 'var(--gold)' : 'rgba(61,46,38,0.06)',
-                  color: y === '31' ? 'var(--ink-deep)' : 'var(--ink-soft)',
-                  fontSize: 11, fontWeight: 600, textAlign:'center',
-                }}>{y}</div>
-              ))}
-            </div>
-          </div>
-        </>
-      );
-    }
-    if (section.kind === 'relationships') {
-      return (
-        <>
-          <FakeLine w="88%"/><FakeLine w="74%"/>
-          <div style={pdfBlock}>
-            <div style={pdfBlockH}>Your relational pattern</div>
-            <FakeLine w="92%" small/><FakeLine w="80%" small/><FakeLine w="68%" small/>
-          </div>
-          <div style={{...pdfBlock, background: 'var(--gold-tint)', borderColor: 'var(--gold-soft)'}}>
-            <div style={{...pdfBlockH, color: 'var(--ink-soft)'}}>Written for your orientation</div>
-            <FakeLine w="78%" small/><FakeLine w="64%" small/>
-          </div>
-          <FakeLine w="82%"/>
-        </>
-      );
-    }
-    if (section.kind === 'year') {
-      return (
-        <>
-          <FakeLine w="84%"/>
-          <div style={{display:'grid', gridTemplateColumns:'repeat(4, 1fr)', gap:6, marginTop:8}}>
-            {['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'].map((m,i) => (
-              <div key={m} style={{
-                padding:'10px 4px', borderRadius:4, textAlign:'center',
-                background: [3,7,9].includes(i) ? 'var(--ink)' : 'rgba(61,46,38,0.05)',
-                color: [3,7,9].includes(i) ? '#fff' : 'var(--ink-soft)',
-                fontSize:11, fontWeight:600,
-              }}>{m}</div>
-            ))}
-          </div>
-          <FakeLine w="86%"/><FakeLine w="70%"/><FakeLine w="78%"/>
-        </>
-      );
-    }
-    return (
-      <>
-        <FakeLine w="88%"/><FakeLine w="72%"/>
-        <div style={pdfBlock}>
-          <div style={pdfBlockH}>The next 10 years</div>
-          <div style={{display:'flex', gap:4, marginTop:8, alignItems:'flex-end', height: 60}}>
-            {[40,55,72,68,80,90,76,62,84,70].map((h,i) => (
-              <div key={i} style={{
-                flex:1, height: `${h}%`, background: i===5 ? 'var(--gold)' : 'var(--almond)',
-                borderRadius: '2px 2px 0 0',
-              }}/>
-            ))}
-          </div>
-          <div style={{display:'flex', justifyContent:'space-between', fontSize:10, color: 'var(--ink-soft)', marginTop:4, fontWeight:600}}>
-            <span>'26</span><span>'31</span><span>'36</span>
-          </div>
-        </div>
-        <FakeLine w="82%"/>
-      </>
-    );
-  };
-
+function ReportPreviewCard({ page }) {
   return (
-    <div className="pdf-card">
-      <div className="pdf-card-page">
-        <div style={{
-          fontSize: 9, fontWeight: 600, letterSpacing: '0.2em',
-          textTransform: 'uppercase', color: 'var(--gold)',
-        }}>
-          Section {String(index+1).padStart(2,'0')} · Fateade
+    <article className="report-preview-card">
+      <div className="report-mini-page">
+        <div className="report-page-topline" />
+        <header className="report-page-header"><div>FATEADE</div><span>{page.header}</span></header>
+        <div className="report-page-body">
+          <div className="report-section-heading">
+            <div className="report-eyebrow">{page.eyebrow}</div>
+            <h3>{page.title}</h3>
+          </div>
+          <ReportPreviewBody kind={page.kind} />
         </div>
-        <div style={{
-          fontFamily: 'var(--font-serif)', fontSize: 22, fontWeight: 500,
-          color: 'var(--ink)', lineHeight: 1.2, marginBottom: 4,
-        }}>{section.label}</div>
-        <div style={{height: 1, background: 'var(--hairline-warm)', margin: '4px 0 12px'}}/>
-        {renderBody()}
       </div>
-      <div className="pdf-card-foot">
-        <span>{section.label}</span>
-        <span>{section.pageNum} / 16</span>
+      <div className="report-preview-foot">
+        <span>{page.foot}</span>
+        <span>{page.page}</span>
       </div>
+    </article>
+  );
+}
+
+function ReportPreviewBody({ kind }) {
+  if (kind === 'pillars') return <PillarsPreview />;
+  if (kind === 'balance') return <BalancePreview />;
+  if (kind === 'wealth') return <StagePreview type="wealth" />;
+  if (kind === 'career') return <StagePreview type="career" />;
+  if (kind === 'love') return <StagePreview type="love" />;
+  if (kind === 'luck') return <LuckPreview />;
+  return <AnnualPreview />;
+}
+
+function PillarsPreview() {
+  return (
+    <>
+      <div className="report-pillar-grid">
+        {['Year', 'Month', 'Day Master', 'Hour'].map((label) => (
+          <div className={`report-pillar-card ${label === 'Day Master' ? 'is-day' : ''}`} key={label}>
+            <div className="report-pillar-label">{label}</div>
+            <div className="report-pillar-stem"><MaskedSymbol /></div>
+            <div className="report-pillar-branch"><MaskedSymbol /></div>
+            <div className="report-pillar-full"><MaskedSmall /><br/><MaskedSmall gold /></div>
+          </div>
+        ))}
+      </div>
+      <div className="report-minor-heading">Key Facts</div>
+      <div className="report-fact-grid">
+        {['Birth', 'Day Master', 'Chart Structure', 'Useful Element', 'Spirit Stars', 'Grand Luck Start'].map((label, index) => (
+          <div className="report-fact" key={label}>
+            <div className="report-fact-label">{label}</div>
+            <Line gold={index === 1 || index === 3} />
+            <Line size={index % 2 ? 'short' : 'mid'} />
+          </div>
+        ))}
+      </div>
+    </>
+  );
+}
+
+function BalancePreview() {
+  const elements = [
+    ['Wood', '木', 'var(--green)', 38],
+    ['Fire', '火', 'var(--korean-red)', 52],
+    ['Earth', '土', '#b5956a', 68],
+    ['Metal', '金', '#6b7a82', 26],
+    ['Water', '水', '#1d3461', 42],
+  ];
+  return (
+    <>
+      <div className="report-element-panel">
+        <div className="report-panel-head">
+          <div>
+            <div className="report-minor-heading">Five Element Balance</div>
+            <Line size="long" />
+          </div>
+          <div className="report-summary-chips"><span>Total</span><span>Dominant</span><span>Absent</span></div>
+        </div>
+        <div className="report-element-grid">
+          {elements.map(([name, glyph, color, width]) => (
+            <div className="report-element-card" style={{'--element-color': color}} key={name}>
+              <div><div className="report-element-glyph">{glyph}</div><div className="report-element-name">{name}</div></div>
+              <div className="report-element-count"><MaskedNumber /></div>
+              <div className="report-track"><div className="report-fill" style={{width: `${width}%`}} /></div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="report-ten-gods-panel">
+        <div className="report-minor-heading">Ten Gods Balance</div>
+        <div className="report-ten-gods-grid">
+          {['比', '食', '財', '官', '印'].map((god, index) => (
+            <div className="report-god-card" key={god}><strong>{god}</strong><span><Line size={index === 2 ? 'short' : 'mid'} gold={index === 3} /></span></div>
+          ))}
+        </div>
+      </div>
+    </>
+  );
+}
+
+function StagePreview({ type }) {
+  const data = {
+    wealth: [
+      ['4-3', 'Wealth Loss Risks and Vulnerable Patterns'],
+      ['4-4', 'Best Periods for Wealth'],
+      ['4-5', 'Wealth Accumulation Strategy'],
+    ],
+    career: [
+      ['5-3', 'Best Career Direction'],
+      ['5-4', 'Career Fortune Flow'],
+      ['5-5', 'Career Success Strategy'],
+    ],
+    love: [
+      ['6-5', 'Periods of Strong Romantic Energy'],
+      ['6-6', 'Love Fortune Flow Analysis'],
+    ],
+  }[type];
+  return (
+    <div className="report-stage-stack">
+      {data.map(([num, title], index) => (
+        <div className={`report-subsection-card ${index === 1 ? 'featured' : ''}`} key={num}>
+          <div className="report-subsection-kicker">{num}</div>
+          <h4>{title}</h4>
+          {index === 1 ? <FlowRow /> : <><Line size={index ? 'mid' : 'long'} gold={index === 2} /><Line size={index ? 'long' : 'mid'} /></>}
+        </div>
+      ))}
+      <div className="report-mini-note"><Line size="long" /><Line size="mid" gold={type === 'love'} /></div>
     </div>
   );
 }
 
-function FakeLine({ w='90%', small=false }) {
-  return <div style={{
-    height: small ? 5 : 6, width: w, borderRadius: 2,
-    background: 'rgba(61,46,38,0.10)',
-  }}/>;
+function FlowRow() {
+  return (
+    <div className="report-flow-row">
+      {[0, 1, 2, 3, 4].map((index) => (
+        <div className={`report-flow-cell ${index === 0 || index === 3 ? 'dark' : ''}`} key={index}>
+          <Line gold={index === 0 || index === 3} />
+          <Line size={index % 2 ? 'short' : 'mid'} />
+        </div>
+      ))}
+    </div>
+  );
 }
-function PdfTag({ label, tone }) {
-  return <div style={{
-    padding: '8px 10px', borderRadius: 4, fontSize: 10, fontWeight: 700,
-    letterSpacing: '0.1em', textTransform: 'uppercase',
-    background: tone === 'ok' ? 'rgba(0,98,65,0.08)' : 'rgba(168,49,42,0.06)',
-    color: tone === 'ok' ? '#0d6b4f' : '#a8312a',
-  }}>{label}</div>;
+
+function LuckPreview() {
+  const cycles = [
+    ['Cycle 1', 'Ages 2-11', '2002-2011', ['money', 'career']],
+    ['Cycle 2', 'Ages 12-21', '2012-2021', ['love', 'caution']],
+    ['Cycle 3', 'Ages 22-31', '2022-2031', ['career', 'money', 'love']],
+    ['Cycle 4', 'Ages 32-41', '2032-2041', ['money', 'career']],
+  ];
+  return (
+    <div className="report-luck-grid">
+      {cycles.map(([cycle, ages, years, tags], index) => (
+        <div className={`report-luck-card ${index === 2 ? 'current' : ''}`} key={cycle}>
+          <div className="report-luck-head">
+            <div className="report-luck-pillar"><MaskedSymbol /></div>
+            <div><div className="report-luck-order">{cycle}</div><h4>{ages}</h4><p>{years}</p></div>
+          </div>
+          <TagRow tags={tags} />
+          <div className="report-luck-body"><Line size="long" gold={index === 2} /><Line size={index === 1 ? 'short' : 'mid'} /></div>
+        </div>
+      ))}
+    </div>
+  );
 }
-const pdfBlock = {
-  marginTop: 8, padding: '12px 14px', borderRadius: 6,
-  background: 'rgba(61,46,38,0.04)', border: '1px solid var(--hairline-warm)',
-  display: 'flex', flexDirection: 'column', gap: 6,
-};
-const pdfBlockH = {
-  fontSize: 10, fontWeight: 700, letterSpacing: '0.14em',
-  textTransform: 'uppercase', color: 'var(--ink-soft)',
-};
+
+function AnnualPreview() {
+  return (
+    <div className="report-annual-grid">
+      {[2022, 2023, 2024, 2025, 2026, 2027].map((year, index) => (
+        <div className="report-annual-card" key={year}>
+          <div className="report-annual-top"><h4>{year}</h4><span className="report-annual-glyph"><MaskedSymbol /></span></div>
+          <div className="report-annual-age">Age {22 + index}</div>
+          <TagRow tags={index % 3 === 0 ? ['career', 'caution'] : index % 3 === 1 ? ['love', 'caution'] : ['money', 'career']} />
+          <div className="report-annual-body"><Line size={index === 4 ? 'mid' : 'long'} gold={index === 2} /><Line size={index % 2 ? 'short' : 'mid'} /></div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function TagRow({ tags }) {
+  return <div className="report-tag-row">{tags.map((tag) => <span className={`report-tag ${tag}`} key={tag}>{tag}</span>)}</div>;
+}
+
+function Line({ size='long', gold=false }) {
+  return <span className={`report-line ${size} ${gold ? 'gold' : ''}`} />;
+}
+
+function MaskedSymbol() {
+  return <span className="report-masked-symbol" />;
+}
+
+function MaskedSmall({ gold=false }) {
+  return <span className={`report-masked-small ${gold ? 'gold' : ''}`} />;
+}
+
+function MaskedNumber() {
+  return <span className="report-masked-number" />;
+}
 
 // ============= LAUNCH OFFER =============
 window.LaunchOffer = function LaunchOffer() {
@@ -403,26 +515,36 @@ window.SocialProof = function SocialProof() {
             position: 'absolute', left: -20, bottom: -60,
             fontSize: 320, color: 'rgba(213,189,175,0.07)',
           }}>師</div>
-          {!mobile && (
-            <div style={{position: 'relative'}}>
+          <div style={{position: 'relative'}}>
+            <div style={{
+              width: '100%',
+              aspectRatio: mobile ? '16 / 11' : '4 / 5',
+              borderRadius: 8,
+              background: 'var(--ink-deep)',
+              position: 'relative',
+              overflow: 'hidden',
+              border: '1px solid rgba(213,189,175,0.18)',
+              boxShadow: '0 24px 50px rgba(0,0,0,0.22)',
+            }}>
+              <img
+                src="assets/images/professor-reading.jpg"
+                alt="Korean Saju specialist reviewing a chart"
+                loading="lazy"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  objectPosition: mobile ? '50% 36%' : '56% 50%',
+                  opacity: 0.92,
+                }}
+              />
               <div style={{
-                width: '100%', aspectRatio: '4 / 5', borderRadius: 8,
-                background: 'linear-gradient(160deg, #5a4438 0%, #2a1f1a 60%, #1a120e 100%)',
-                position: 'relative', overflow: 'hidden',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                border: '1px solid rgba(213,189,175,0.18)',
-              }}>
-                <div className="hanja-mark" style={{
-                  fontSize: 180, color: 'rgba(213,189,175,0.14)', fontWeight: 200,
-                }}>師</div>
-                <div style={{
-                  position: 'absolute', bottom: 16, left: 16, right: 16,
-                  fontSize: 11, color: 'rgba(255,255,255,0.5)', letterSpacing: '0.14em',
-                  textTransform: 'uppercase', textAlign: 'center',
-                }}>Photo placeholder · drop in real portrait</div>
-              </div>
+                position: 'absolute', inset: 0,
+                background: 'linear-gradient(180deg, rgba(26,18,14,0.08) 0%, rgba(26,18,14,0.18) 100%)',
+                pointerEvents: 'none',
+              }} />
             </div>
-          )}
+          </div>
           <div style={{position: 'relative'}}>
             <span className="kicker kicker--white" style={{color: 'var(--gold)'}}>
               The expertise behind your reading

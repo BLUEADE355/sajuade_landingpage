@@ -3,6 +3,34 @@
 // ============= PRICING =============
 window.Pricing = function Pricing() {
   const mobile = useMobile();
+  const discountPill = (label, dark=false) => (
+    <span style={{
+      display: 'inline-flex', alignItems: 'center',
+      padding: '5px 10px', borderRadius: 999,
+      background: dark ? 'rgba(203,162,88,0.18)' : 'var(--gold-tint)',
+      color: dark ? 'var(--gold)' : 'var(--ink-soft)',
+      border: dark ? '1px solid rgba(203,162,88,0.32)' : '1px solid rgba(203,162,88,0.28)',
+      fontSize: 11, fontWeight: 700, letterSpacing: '0.08em',
+      textTransform: 'uppercase',
+    }}>{label}</span>
+  );
+  const discountInline = (label, dark=false) => (
+    <span style={{
+      display: 'inline-flex', alignItems: 'center',
+      padding: '6px 12px', borderRadius: 999,
+      background: dark ? 'rgba(203,162,88,0.18)' : 'var(--gold-tint)',
+      border: dark ? '1px solid rgba(203,162,88,0.36)' : '1px solid rgba(203,162,88,0.34)',
+      color: dark ? 'var(--gold)' : 'var(--ink-soft)',
+      fontSize: mobile ? 15 : 16,
+      fontWeight: 800,
+      letterSpacing: '0.06em',
+      textTransform: 'uppercase',
+      whiteSpace: 'nowrap',
+    }}>{label}</span>
+  );
+  const reportCheckoutUrl = 'https://www.paypal.com/ncp/payment/D5489XLQ5KP94';
+  const consultationCheckoutUrl = 'https://www.paypal.com/ncp/payment/ZJEQUNGD56XHQ';
+
   return (
     <section className="section section--cream" id="pricing">
       <div className="section-inner section-inner--wide">
@@ -12,20 +40,22 @@ window.Pricing = function Pricing() {
             Simple pricing. No surprises.
           </h2>
           <p className="lead" style={{maxWidth: 480, margin: '0 auto'}}>
-            All reports are 50% off during our launch period.
+            Launch pricing is already applied. Choose the report alone, or bundle it with written follow-up.
           </p>
         </div>
 
         {/* Cards */}
         <div style={{
           display: 'grid',
-          gridTemplateColumns: mobile ? '1fr' : 'repeat(3, 1fr)',
+          gridTemplateColumns: mobile ? '1fr' : 'repeat(2, minmax(0, 1fr))',
           gap: 20,
           alignItems: mobile ? 'stretch' : 'stretch',
+          maxWidth: 900,
+          margin: '0 auto',
         }}>
           {/* Card 1 — Featured */}
           <div className="price-card price-card--featured" style={{transform: mobile ? 'none' : undefined}}>
-            <div className="price-badge">Most recommended</div>
+            <div className="price-badge">50% off</div>
             <div style={{display:'flex', alignItems:'center', gap: 10, marginBottom: 4}}>
               <div style={{
                 width: 40, height: 40, borderRadius: '50%',
@@ -44,52 +74,26 @@ window.Pricing = function Pricing() {
               career, money, and the next 10 years.
             </p>
             <div style={{display: 'flex', gap: 8, fontSize: 12, color: 'rgba(255,255,255,0.6)', flexWrap: 'wrap'}}>
-              <span>15+ pages</span>
+              <span>35+ page PDF</span>
               <span>·</span>
-              <span>PDF</span>
+              <span>Personalized report</span>
               <span>·</span>
               <span>Delivered in 48 hrs</span>
             </div>
-            <div style={{display: 'flex', alignItems: 'baseline', gap: 12, marginTop: 12}}>
+            <div>{discountPill('Save $10', true)}</div>
+            <div style={{display: 'flex', alignItems: 'center', gap: 12, marginTop: 12, flexWrap: 'wrap'}}>
               <span className="price-strike" style={{fontSize: 22}}>$20</span>
               <span className="price-now" style={{color: '#fff'}}>$10</span>
+              {discountInline('50% off', true)}
             </div>
-            <a href="#" className="btn-pill btn-pill--gold" style={{marginTop: 8}}>
+            <a href={reportCheckoutUrl} target="_blank" rel="noopener noreferrer" className="btn-pill btn-pill--gold" style={{marginTop: 8}}>
               Get My Report <Arrow size={18}/>
             </a>
           </div>
 
-          {/* Card 2 — Annual Forecast */}
+          {/* Card 2 — Bundle */}
           <div className="price-card">
-            <div style={{display:'flex', alignItems:'center', gap: 10, marginBottom: 4}}>
-              <div style={{
-                width: 40, height: 40, borderRadius: '50%',
-                background: 'var(--paper-warm)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-              }}>
-                <i className="ti ti-calendar-stats" style={{fontSize: 18, color: 'var(--ink)'}}></i>
-              </div>
-              <div className="kicker" style={{margin: 0}}>Add-on</div>
-            </div>
-            <h3 style={{color: 'var(--ink)', fontFamily: 'var(--font-serif)', fontSize: 26, fontWeight: 500, margin: 0}}>
-              Annual Forecast
-            </h3>
-            <p style={{fontSize: 15, color: 'rgba(0,0,0,0.62)', lineHeight: 1.55, margin: 0}}>
-              Month-by-month breakdown of your year —
-              what to lean into, what to avoid, and when.
-            </p>
-            <div style={{fontSize: 12, color: 'rgba(0,0,0,0.5)'}}>12-month timing map</div>
-            <div style={{display: 'flex', alignItems: 'baseline', gap: 12, marginTop: 12}}>
-              <span className="price-strike" style={{fontSize: 22}}>$10</span>
-              <span className="price-now">$5</span>
-            </div>
-            <a href="#" className="btn-pill btn-pill--outline" style={{marginTop: 8}}>
-              Add to My Order <Arrow size={18}/>
-            </a>
-          </div>
-
-          {/* Card 3 — Consultation */}
-          <div className="price-card">
+            <div className="price-badge">Best value</div>
             <div style={{display:'flex', alignItems:'center', gap: 10, marginBottom: 4}}>
               <div style={{
                 width: 40, height: 40, borderRadius: '50%',
@@ -98,27 +102,35 @@ window.Pricing = function Pricing() {
               }}>
                 <i className="ti ti-messages" style={{fontSize: 18, color: 'var(--ink)'}}></i>
               </div>
-              <div className="kicker" style={{margin: 0}}>Add-on</div>
+              <div className="kicker" style={{margin: 0}}>Report + consultation</div>
             </div>
             <h3 style={{color: 'var(--ink)', fontFamily: 'var(--font-serif)', fontSize: 26, fontWeight: 500, margin: 0}}>
-              1-on-1 Written Consultation
+              Full Destiny Report + 1-on-1 Written Consultation
             </h3>
             <p style={{fontSize: 15, color: 'rgba(0,0,0,0.62)', lineHeight: 1.55, margin: 0}}>
-              Ask up to 5 questions.
-              Written answers within 24 hours.
+              Get the full report, then ask up to 5 follow-up questions.
+              Written answers are delivered within 24 hours after your report.
             </p>
-            <div style={{fontSize: 12, color: 'rgba(0,0,0,0.5)'}}>Personal follow-up</div>
-            <div style={{display: 'flex', alignItems: 'baseline', gap: 12, marginTop: 12}}>
-              <span className="price-strike" style={{fontSize: 22}}>$30</span>
-              <span className="price-now">$15</span>
+            <div style={{display: 'flex', gap: 8, fontSize: 12, color: 'rgba(0,0,0,0.52)', flexWrap: 'wrap'}}>
+              <span>35+ page PDF</span>
+              <span>·</span>
+              <span>5 written answers</span>
+              <span>·</span>
+              <span>Priority follow-up</span>
             </div>
-            <a href="#" className="btn-pill btn-pill--outline" style={{marginTop: 8}}>
-              Add Consultation <Arrow size={18}/>
+            <div>{discountPill('70% off · save $70')}</div>
+            <div style={{display: 'flex', alignItems: 'center', gap: 12, marginTop: 12, flexWrap: 'wrap'}}>
+              <span className="price-strike" style={{fontSize: 22}}>$100</span>
+              <span className="price-now">$30</span>
+              {discountInline('70% off')}
+            </div>
+            <a href={reportCheckoutUrl} target="_blank" rel="noopener noreferrer" className="btn-pill btn-pill--outline" style={{marginTop: 8}}>
+              Get Report + Consultation <Arrow size={18}/>
             </a>
           </div>
         </div>
 
-        {/* Bundle row */}
+        {/* Add-on note */}
         <div style={{
           marginTop: 32, padding: mobile ? '20px 20px' : '24px 32px',
           background: 'var(--paper-warm)', borderRadius: 12,
@@ -135,22 +147,27 @@ window.Pricing = function Pricing() {
           }}>✦</div>
           <div style={{flex: 1, minWidth: 200}}>
             <div style={{fontSize: 11, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--ink-soft)', marginBottom: 4}}>
-              Popular bundle
+              Standalone or report add-on
             </div>
             <div style={{fontFamily: 'var(--font-serif)', fontSize: 22, fontWeight: 500, color: 'var(--ink)'}}>
-              Report + Annual Forecast
+              1-on-1 Written Consultation
             </div>
-            <div style={{fontSize: 14, color: 'rgba(0,0,0,0.6)', marginTop: 2}}>
-              Most popular with first-time readers.
+            <div style={{fontSize: 14, color: 'rgba(0,0,0,0.62)', marginTop: 2, lineHeight: 1.55}}>
+              Best after buying the Full Destiny Report. It can be purchased separately, but it does not include a report.
+              If purchased without a report, no report will be delivered — only written answers to your submitted questions.
+              Refunds may be limited once written work begins.
             </div>
           </div>
-          <div style={{display: 'flex', alignItems: 'baseline', gap: 12}}>
-            <span className="price-strike" style={{fontSize: 20}}>$30</span>
-            <span style={{fontFamily:'var(--font-serif)', fontSize: 36, fontWeight: 500, color: 'var(--ink)'}}>$15</span>
+          <div style={{display: 'flex', flexDirection: 'column', alignItems: mobile ? 'stretch' : 'flex-end', gap: 10, width: mobile ? '100%' : 'auto'}}>
+            <div style={{display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap', justifyContent: mobile ? 'flex-start' : 'flex-end'}}>
+              <span className="price-strike" style={{fontSize: 20}}>$80</span>
+              <span style={{fontFamily:'var(--font-serif)', fontSize: 36, fontWeight: 500, color: 'var(--ink)'}}>$40</span>
+              {discountInline('50% off')}
+            </div>
+            <a href={consultationCheckoutUrl} target="_blank" rel="noopener noreferrer" className="btn-pill btn-pill--outline" style={{width: mobile ? '100%' : 'auto', justifyContent: 'center'}}>
+              Buy Consultation Only <Arrow size={18}/>
+            </a>
           </div>
-          <a href="#" className="btn-pill btn-pill--primary" style={{width: mobile ? '100%' : 'auto', justifyContent: 'center'}}>
-            Get the Bundle <Arrow size={18}/>
-          </a>
         </div>
 
         {/* Trust line */}
@@ -160,7 +177,7 @@ window.Pricing = function Pricing() {
           flexWrap: 'wrap', alignItems: 'center',
         }}>
           <span style={{display:'inline-flex', gap:6, alignItems:'center'}}>
-            <Lock/> Secure checkout via Paddle
+            <Lock/> Secure checkout via PayPal
           </span>
           <span>·</span>
           <span>One-time payment</span>
@@ -398,7 +415,16 @@ window.SiteFooter = function SiteFooter() {
 window.FloatingCTA = function FloatingCTA() {
   const [visible, setVisible] = useState(false);
   useEffect(() => {
-    const onScroll = () => setVisible(window.scrollY > 600 && window.scrollY < (document.body.scrollHeight - window.innerHeight - 400));
+    const onScroll = () => {
+      const pricing = document.getElementById('pricing');
+      const pricingRect = pricing?.getBoundingClientRect();
+      const pricingInView = pricingRect ? pricingRect.top < window.innerHeight - 120 && pricingRect.bottom > 120 : false;
+      setVisible(
+        window.scrollY > 600 &&
+        window.scrollY < (document.body.scrollHeight - window.innerHeight - 400) &&
+        !pricingInView
+      );
+    };
     window.addEventListener('scroll', onScroll);
     onScroll();
     return () => window.removeEventListener('scroll', onScroll);
