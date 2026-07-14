@@ -74,7 +74,7 @@ window.Pricing = function Pricing() {
               career, money, and the next 10 years.
             </p>
             <div style={{display: 'flex', gap: 8, fontSize: 12, color: 'rgba(255,255,255,0.6)', flexWrap: 'wrap'}}>
-              <span>35+ page PDF</span>
+              <span>25+ page PDF</span>
               <span>·</span>
               <span>Personalized report</span>
               <span>·</span>
