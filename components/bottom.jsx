@@ -112,7 +112,7 @@ window.Pricing = function Pricing() {
               Written answers are delivered within 24 hours after your report.
             </p>
             <div style={{display: 'flex', gap: 8, fontSize: 12, color: 'rgba(0,0,0,0.52)', flexWrap: 'wrap'}}>
-              <span>35+ page PDF</span>
+              <span>25+ page PDF</span>
               <span>·</span>
               <span>5 written answers</span>
               <span>·</span>
