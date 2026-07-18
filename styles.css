@@ -850,6 +850,16 @@ a { color: inherit; }
   font-weight: 700;
   margin-bottom: 16px;
 }
+
+.legal-modal-body h3 {
+  margin: 24px 0 6px;
+  color: var(--ink);
+  font-family: var(--font-serif);
+  font-size: 19px;
+  font-weight: 600;
+}
+.legal-modal-body h3:first-child { margin-top: 0; }
+.legal-modal-body p { margin: 0 0 12px; }
 .step-arrow {
   flex: 0 0 auto;
   display: flex;

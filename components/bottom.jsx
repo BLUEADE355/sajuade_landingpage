@@ -199,6 +199,47 @@ function Lock() {
   );
 }
 
+// ============= REPORT PREVIEW CTA =============
+window.ReportPreviewCta = function ReportPreviewCta() {
+  const mobile = useMobile();
+  const reportPreviewUrl = 'https://drive.google.com/file/d/1HHtuHgdCFkW5zOWStkUOavg0qs3g2W5O/view?usp=sharing';
+
+  return (
+    <section style={{background: 'var(--ink)', color: '#fff', padding: mobile ? '44px 24px' : '52px 80px'}}>
+      <div style={{
+        maxWidth: 980, margin: '0 auto',
+        display: 'flex', flexDirection: mobile ? 'column' : 'row',
+        alignItems: mobile ? 'flex-start' : 'center', justifyContent: 'space-between',
+        gap: mobile ? 24 : 48,
+      }}>
+        <div>
+          <span className="kicker" style={{color: 'var(--gold-soft)'}}>Before you decide</span>
+          <h2 style={{
+            fontFamily: 'var(--font-serif)', fontSize: mobile ? 30 : 38,
+            fontWeight: 500, lineHeight: 1.2, margin: '12px 0 8px', color: '#fff',
+          }}>
+            Still not sure?
+          </h2>
+          <p style={{fontSize: mobile ? 16 : 18, lineHeight: 1.6, margin: 0, color: 'rgba(255,255,255,0.72)'}}>
+            Preview the report before you decide.
+          </p>
+        </div>
+        <a
+          href={reportPreviewUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="btn-pill btn-pill--gold"
+          style={{width: mobile ? '100%' : 'auto', flex: '0 0 auto'}}
+        >
+          <i className="ti ti-file-search" style={{fontSize: 18}}></i>
+          Preview Sample Report
+          <i className="ti ti-external-link" style={{fontSize: 16}}></i>
+        </a>
+      </div>
+    </section>
+  );
+};
+
 // ============= HOW IT WORKS =============
 window.HowItWorks = function HowItWorks() {
   const mobile = useMobile();
@@ -207,13 +248,13 @@ window.HowItWorks = function HowItWorks() {
       num: '01',
       icon: 'ti-receipt',
       title: 'Place your order',
-      body: 'Choose your reading and fill in your birth details — date, place, and time if you have it.',
+      body: 'After placing your order, complete the guided form with the required information.',
     },
     {
       num: '02',
       icon: 'ti-eye',
       title: 'We analyze your chart',
-      body: 'A Korean Saju specialist reads your four pillars and writes your report by hand.',
+      body: 'A Korean Saju specialist reads your four pillars and writes your report.',
     },
     {
       num: '03',
@@ -284,11 +325,11 @@ window.FAQ = function FAQ() {
   const faqs = [
     {
       q: 'How accurate is this?',
-      a: 'Saju is a framework, not a guarantee. What we can promise: your report is specific, honest, and based on your exact birth data — not a generic template.',
+      a: 'Saju is a framework, not a guarantee. Your report is specific, honest, and based on your exact birth data.',
     },
     {
       q: 'What information do I need?',
-      a: 'Your birth date (year, month, day) and birth time. If you don\'t know your exact birth time, that\'s okay — we\'ll work with what you have and note it in the report.',
+      a: 'Your birth date (year, month, day) and birth time. If you don\'t know your exact birth time, that\'s okay. However, please be aware that the analysis may be less precise without the exact time.',
     },
     {
       q: 'How long does it take?',
@@ -300,7 +341,7 @@ window.FAQ = function FAQ() {
     },
     {
       q: 'What if I\'m not satisfied?',
-      a: 'If your report doesn\'t resonate, reach out. We\'ll redo it — plus offer a free 1-on-1 consultation. That\'s a $50 value, at no cost to you.',
+      a: 'Please understand that refunds are generally unavailable due to the nature of digital content. However, upon request, we will provide an additional 1-on-1 consultation, valued at $80, free of charge.',
     },
   ];
   return (
@@ -369,11 +410,70 @@ window.FinalCTA = function FinalCTA() {
 // ============= FOOTER =============
 window.SiteFooter = function SiteFooter() {
   const mobile = useMobile();
+  const [modal, setModal] = useState(null);
+  useEffect(() => {
+    if (!modal) return;
+    const closeOnEscape = (event) => event.key === 'Escape' && setModal(null);
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', closeOnEscape);
+    return () => {
+      document.body.style.overflow = '';
+      window.removeEventListener('keydown', closeOnEscape);
+    };
+  }, [modal]);
+
+  const modalContent = {
+    terms: {
+      title: 'Terms of Service',
+      body: (
+        <>
+          <h3>Digital service</h3>
+          <p>Fateade provides personalized Saju reports and written consultations as digital content for entertainment and self-reflection. The service is not legal, financial, medical, or psychological advice, and no specific outcome is guaranteed.</p>
+          <h3>Orders and delivery</h3>
+          <p>You are responsible for submitting accurate birth details and contact information. Delivery times are estimates and may vary during periods of high demand.</p>
+          <h3>Cancellations and refunds</h3>
+          <p>Because each report is personalized digital content, cancellations and refunds are generally unavailable once analysis or writing has begun, or after the report has been delivered. This does not limit any refund rights required by applicable law, including cases where the service is not delivered or is materially defective.</p>
+          <h3>Permitted use</h3>
+          <p>Your report is licensed for your personal use only. It may not be resold, reproduced commercially, or redistributed without written permission.</p>
+        </>
+      ),
+    },
+    privacy: {
+      title: 'Privacy Policy',
+      body: (
+        <>
+          <h3>Information we collect</h3>
+          <p>We may collect your name, email address, birth details, order information, and questions you submit for your reading.</p>
+          <h3>How we use it</h3>
+          <p>Your information is used only to prepare and deliver your report, process your order, provide customer support, and operate the service. We do not sell your personal information.</p>
+          <h3>Storage and deletion</h3>
+          <p>Personal reading information is retained only for as long as needed to provide the service and handle reasonable support requests, then securely deleted. Payment or transaction records may be retained where required by law. Information may be handled by essential service providers, such as payment, form, email, or file-delivery providers.</p>
+          <h3>Your request</h3>
+          <p>You may contact us to request access to or deletion of your personal information, subject to any legal retention requirements.</p>
+        </>
+      ),
+    },
+    contact: {
+      title: 'Contact',
+      body: (
+        <>
+          <p>Questions about your order, report, privacy, or these terms can be sent to:</p>
+          <a href="mailto:revi01282@gmail.com" style={{color: 'var(--ink)', fontWeight: 700}}>revi01282@gmail.com</a>
+        </>
+      ),
+    },
+  };
+
+  const footerLinkStyle = {
+    appearance: 'none', background: 'none', border: 0, padding: 0,
+    color: 'inherit', font: 'inherit', cursor: 'pointer',
+  };
   return (
-    <footer style={{
-      background: 'var(--ink-deep)', color: 'rgba(255,255,255,0.7)',
-      padding: mobile ? '20px 24px' : '28px 80px',
-    }}>
+    <>
+      <footer style={{
+        background: 'var(--ink-deep)', color: 'rgba(255,255,255,0.7)',
+        padding: mobile ? '20px 24px' : '28px 80px',
+      }}>
       <div className="section-inner" style={{maxWidth: 1200}}>
         <div style={{
           display: 'flex',
@@ -386,9 +486,9 @@ window.SiteFooter = function SiteFooter() {
         }}>
           <div>© 2026 Fateade · Saju Studio. All rights reserved.</div>
           <div style={{display: 'flex', gap: 20}}>
-            <span style={{cursor:'pointer'}}>Terms</span>
-            <span style={{cursor:'pointer'}}>Privacy</span>
-            <span style={{cursor:'pointer'}}>Contact</span>
+            <button type="button" style={footerLinkStyle} onClick={() => setModal('terms')}>Terms</button>
+            <button type="button" style={footerLinkStyle} onClick={() => setModal('privacy')}>Privacy</button>
+            <button type="button" style={footerLinkStyle} onClick={() => setModal('contact')}>Contact</button>
           </div>
         </div>
 
@@ -407,7 +507,56 @@ window.SiteFooter = function SiteFooter() {
           </span>
         </div>
       </div>
-    </footer>
+      </footer>
+
+      {modal && (
+        <div
+          role="presentation"
+          onClick={() => setModal(null)}
+          style={{
+            position: 'fixed', inset: 0, zIndex: 100,
+            background: 'rgba(26,18,14,0.72)', padding: mobile ? 16 : 32,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+          }}
+        >
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="legal-modal-title"
+            onClick={(event) => event.stopPropagation()}
+            style={{
+              width: '100%', maxWidth: 720, maxHeight: '84vh', overflowY: 'auto',
+              background: 'var(--paper)', color: 'var(--ink)', borderRadius: 8,
+              padding: mobile ? '28px 24px' : '40px 44px', position: 'relative',
+              boxShadow: '0 28px 80px rgba(0,0,0,0.28)',
+            }}
+          >
+            <button
+              type="button"
+              onClick={() => setModal(null)}
+              aria-label="Close dialog"
+              title="Close"
+              style={{
+                position: 'absolute', top: 16, right: 16,
+                width: 36, height: 36, borderRadius: '50%',
+                border: '1px solid var(--hairline-warm)', background: '#fff',
+                color: 'var(--ink)', cursor: 'pointer', fontSize: 20,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+              }}
+            >
+              <i className="ti ti-x"></i>
+            </button>
+            <span className="kicker">Fateade</span>
+            <h2 id="legal-modal-title" style={{fontFamily: 'var(--font-serif)', fontSize: mobile ? 32 : 42, fontWeight: 500, margin: '12px 48px 24px 0'}}>
+              {modalContent[modal].title}
+            </h2>
+            <div className="legal-modal-body" style={{fontSize: 15, lineHeight: 1.7, color: 'rgba(42,31,26,0.76)'}}>
+              {modalContent[modal].body}
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 

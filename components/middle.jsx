@@ -97,10 +97,10 @@ window.ReportPreview = function ReportPreview() {
           }}>★</div>
           <div>
             <div style={{fontFamily: 'var(--font-serif)', fontSize: mobile ? 18 : 22, fontWeight: 500, marginBottom: 6}}>
-              Your most important topic comes first.
+              What you’ve been dying to know.
             </div>
             <div style={{fontSize: 15, color: 'rgba(255,255,255,0.7)'}}>
-              Whatever you came here to figure out — that's where we start.
+              It analyzes each area of your fortune in detail, along with the overall flow of your life and the years that require extra care.
             </div>
           </div>
         </div>

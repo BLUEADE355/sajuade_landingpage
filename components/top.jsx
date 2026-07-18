@@ -72,6 +72,7 @@ window.Arrow = function Arrow({size=16}) {
 // ============= HERO =============
 window.Hero = function Hero() {
   const mobile = useMobile();
+  const reportPreviewUrl = 'https://drive.google.com/file/d/1HHtuHgdCFkW5zOWStkUOavg0qs3g2W5O/view?usp=sharing';
   return (
     <section id="top" style={{
       position: 'relative', overflow: 'hidden',
@@ -110,9 +111,28 @@ window.Hero = function Hero() {
         <p style={{maxWidth:620, margin:'0 auto 36px', fontSize:15, color:'rgba(255,255,255,0.45)', letterSpacing:'-0.005em'}}>
           Trusted by 200+ readers worldwide.
         </p>
-        <a href="#pricing" className="btn-pill btn-pill--inverted btn-pill--lg" style={{marginBottom:20}}>
-          Get My Reading <Arrow size={18}/>
-        </a>
+        <div style={{
+          display: 'flex', flexDirection: mobile ? 'column' : 'row',
+          alignItems: 'center', justifyContent: 'center', gap: 12,
+          marginBottom: 20,
+        }}>
+          <a href="#pricing" className="btn-pill btn-pill--inverted btn-pill--lg">
+            Get My Reading <Arrow size={18}/>
+          </a>
+          <a
+            href={reportPreviewUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-pill btn-pill--outline"
+            style={{
+              padding: '10px 18px', fontSize: 14,
+              color: '#fff', borderColor: 'rgba(255,255,255,0.55)',
+            }}
+          >
+            <i className="ti ti-file-search" style={{fontSize: 16}}></i>
+            Preview Report
+          </a>
+        </div>
         <div style={{fontSize:13, color:'rgba(255,255,255,0.45)', letterSpacing:'-0.005em'}}>
           One-time payment · No subscription · PDF delivered within 48 hours
         </div>
@@ -188,10 +208,10 @@ window.Problem = function Problem() {
 window.SajuExplainer = function SajuExplainer() {
   const mobile = useMobile();
   const pillars = [
-    { hanja: '年', romaja: 'Nyŏn', label: 'Year', desc: 'Your inheritance' },
-    { hanja: '月', romaja: 'Wŏl', label: 'Month', desc: 'Your formation' },
-    { hanja: '日', romaja: 'Il', label: 'Day', desc: 'Your true self' },
-    { hanja: '時', romaja: 'Si', label: 'Hour', desc: 'Your destiny' },
+    { hanja: '年', label: 'Year', desc: 'Your inheritance' },
+    { hanja: '月', label: 'Month', desc: 'Your formation' },
+    { hanja: '日', label: 'Day', desc: 'Your true self' },
+    { hanja: '時', label: 'Hour', desc: 'Your destiny' },
   ];
   return (
     <section className="section section--linen">
@@ -241,8 +261,8 @@ window.SajuExplainer = function SajuExplainer() {
                 <div className="hanja-mark" style={{position:'absolute', right:-10, top:-20, fontSize:140, color:'rgba(61,46,38,0.06)', fontWeight:300}}>{p.hanja}</div>
                 <div style={{position:'relative'}}>
                   <div className="hanja-mark" style={{fontSize:36, color:'var(--ink)', marginBottom:12}}>{p.hanja}</div>
-                  <div style={{fontSize:12, fontWeight:600, letterSpacing:'0.18em', textTransform:'uppercase', color:'var(--gold)', marginBottom:4}}>
-                    {p.romaja} · Pillar {i+1}
+                  <div style={{fontSize:12, fontWeight:700, letterSpacing:'0.16em', textTransform:'uppercase', color:'var(--gold)', marginBottom:6}}>
+                    Pillar {i+1}
                   </div>
                   <div style={{fontFamily:'var(--font-serif)', fontSize: mobile ? 18 : 22, fontWeight:500, color:'var(--ink)', marginBottom:4}}>{p.label}</div>
                   <div style={{fontSize:14, color:'rgba(0,0,0,0.6)'}}>{p.desc}</div>
